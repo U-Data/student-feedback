@@ -54,15 +54,22 @@ const removeFeaturedReviewFromList = (featuredReview, reviewData) => {
 };
 
 
-const getReviewData = (courseId, res) => {
-  db.Reviews.findAll({ where: { courseId }, include: [db.Users] })
-    .then((data) => {
-      const reviewData = flattenReviewData(data);
-      const courseStats = calcCourseStats(reviewData);
-      const featuredReview = findFeaturedReview(reviewData);
-      const reviews = removeFeaturedReviewFromList(featuredReview, reviewData);
-      res.status(200).send({ courseStats, featuredReview, reviews });
-    });
+const getReviewData = (courseId, client, res) => {
+  return client.get(courseId, (err, result) => {
+    if (result) {
+      const review = JSON.parse(result);
+      return res.status(200).send(review);
+    }
+    db.Reviews.findAll({ where: { courseId }, include: [db.Users] })
+      .then((data) => {
+        const reviewData = flattenReviewData(data);
+        const courseStats = calcCourseStats(reviewData);
+        const featuredReview = findFeaturedReview(reviewData);
+        const reviews = removeFeaturedReviewFromList(featuredReview, reviewData);
+        client.setex(courseId, 60, JSON.stringify({ courseStats, featuredReview, reviews }));
+        res.status(200).send({ courseStats, featuredReview, reviews });
+      });
+  });
 };
 
 const addReview = (courseId, reviewInfo, res) => {

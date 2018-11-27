@@ -1,5 +1,6 @@
 require('newrelic');
 const express = require('express');
+const redis = require('redis');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -8,6 +9,12 @@ const { getReviewData, addReview, removeReview, updateReview } = require('./serv
 const app = express();
 const PORT = 3002;
 
+const client = redis.createClient();
+
+client.on('error', (err) => {
+  console.log(`Error: ${err}`);
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -15,7 +22,7 @@ app.use('/courses/:courseId', express.static(path.join(__dirname, '/../public/')
 
 app.get('/:courseId/reviews', (req, res) => {
   const { courseId } = req.params;
-  getReviewData(courseId, res);
+  getReviewData(courseId, client, res);
 });
 
 app.post('/:courseId/reviews', (req, res) => {
