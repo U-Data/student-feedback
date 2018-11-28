@@ -7,7 +7,7 @@ const path = require('path');
 const { getReviewData, addReview, removeReview, updateReview } = require('./serverModel.js');
 
 const app = express();
-const PORT = 3002;
+const PORT = 3001;
 
 const client = redis.createClient();
 
