@@ -10,7 +10,7 @@ const app = express();
 const PORT = 3001;
 
 const client = redis.createClient();
-
+ 
 client.on('error', (err) => {
   console.log(`Error: ${err}`);
 });
