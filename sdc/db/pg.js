@@ -1,10 +1,13 @@
 const pg = require('pg');
+const dbConfig = require('../../db.config.js');
 
 const pool = new pg.Pool({
-  user: 'jimmymartin',
-  host: 'localhost',
-  database: 'udemy',
-  password: 'QETUO1177adgjl',
+  dialect: dbConfig.dialect,
+  user: dbConfig.user,
+  host: dbConfig.host,
+  database: dbConfig.database,
+  password: dbConfig.password,
+  port: dbConfig.port,
 });
 
 pool.query('DROP TABLE IF EXISTS reviews, users, courses')

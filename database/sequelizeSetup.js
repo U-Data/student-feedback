@@ -1,11 +1,11 @@
 const Sequelize = require('sequelize');
-const DbConfig = require('./db.config.js');
+const DbConfig = require('../db.config.js');
 
 // const sequelize = new Sequelize('udemy', 'root', null, { dialect: 'mysql' });
-const sequelize = new Sequelize(DbConfig.databaseName, DbConfig.username, DbConfig.password, {
+const sequelize = new Sequelize(DbConfig.database, DbConfig.user, DbConfig.password, {
   dialect: DbConfig.dialect,
-  host: DbConfig.hostName,
-  port: 5432,
+  host: DbConfig.host,
+  port: DbConfig.port,
   logging: console.log,
   define: {
     timestamps: false,

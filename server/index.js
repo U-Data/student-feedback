@@ -9,7 +9,7 @@ const { getReviewData, addReview, removeReview, updateReview } = require('./serv
 const app = express();
 const PORT = 3001;
 
-const client = redis.createClient();
+const client = redis.createClient(6379,'ec2-18-224-22-205.us-east-2.compute.amazonaws.com');
  
 client.on('error', (err) => {
   console.log(`Error: ${err}`);
